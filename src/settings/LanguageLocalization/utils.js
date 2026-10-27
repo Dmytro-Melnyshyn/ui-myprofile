@@ -6,6 +6,20 @@ import {
 import { supportedLocales } from '@folio/stripes/core';
 
 /**
+ * Filter locale options by matching the search term anywhere in the label.
+ * Selection's default filter only matches from the beginning of the label.
+ *
+ * @param {string} value search term
+ * @param {array} dataOptions locale options
+ * @returns {array} matching locale options
+ */
+export const filterLocaleOptions = (value, dataOptions = []) => {
+  const searchTerm = value.toLocaleLowerCase();
+
+  return dataOptions.filter(option => option.label.toLocaleLowerCase().includes(searchTerm));
+};
+
+/**
  * localesList: list of available locales suitable for a Select
  * label contains language in context's locale and in iteree's locale
  * e.g. given the context's locale is `en` and the keys `ar` and `zh-CN` show:
