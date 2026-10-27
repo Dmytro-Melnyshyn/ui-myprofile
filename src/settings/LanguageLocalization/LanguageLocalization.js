@@ -10,7 +10,7 @@ import {
   Button,
   CommandList,
   PaneMenu,
-  Select,
+  Selection,
   defaultKeyboardShortcuts
 } from '@folio/stripes/components';
 import {
@@ -123,8 +123,8 @@ const LanguageLocalization = () => {
             id={fieldNames.LOCALE}
             name={fieldNames.LOCALE}
             label={intl.formatMessage({ id: 'ui-myprofile.settings.languageLocalization.fieldLocale.label' })}
+            component={Selection}
             dataOptions={localesOptions}
-            component={Select}
           />
         </ConnectedConfigManager>
       </TitleManager>
