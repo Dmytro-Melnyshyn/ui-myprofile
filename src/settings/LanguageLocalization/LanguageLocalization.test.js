@@ -209,4 +209,78 @@ describe('LanguageLocalization', () => {
       await waitFor(() => expect(mockSetLocale).toHaveBeenCalledWith('en-US-u-nu-latn'));
     });
   });
+
+  describe('locale field', () => {
+    const originalConfigManagerImplementation = ConfigManager.getMockImplementation();
+
+    // The ConfigManager mock only renders `lastMenu`; render the form fields too so the locale field is mounted.
+    beforeAll(() => {
+      ConfigManager.mockImplementation(({ children, lastMenu }) => (
+        <div>
+          {lastMenu}
+          {children}
+        </div>
+      ));
+    });
+
+    afterAll(() => {
+      ConfigManager.mockImplementation(originalConfigManagerImplementation);
+    });
+
+    const renderLocaleField = () => render(
+      <Harness>
+        <Form
+          onSubmit={() => {}}
+          mutators={arrayMutators}
+          initialValues={{ locale: 'en-GB' }}
+          render={formProps => (
+            <LanguageLocalization {...formProps} />
+          )}
+        />
+      </Harness>
+    );
+
+    const getLocaleControl = () => screen.getByRole('button', { name: /ui-myprofile.settings.languageLocalization.fieldLocale.label/ });
+
+    it('renders a selection control showing the current locale', () => {
+      renderLocaleField();
+
+      expect(getLocaleControl()).toHaveTextContent('British English / British English');
+    });
+
+    it('filters the locale options by a term found anywhere in the label', async () => {
+      renderLocaleField();
+
+      fireEvent.click(getLocaleControl());
+      fireEvent.change(screen.getByRole('combobox', { name: /options filter/ }), { target: { value: 'English' } });
+
+      await waitFor(() => {
+        const optionTexts = screen.getAllByRole('option').map(option => option.textContent);
+
+        expect(optionTexts.some(text => text.includes('British English / British English'))).toBe(true);
+        expect(optionTexts.some(text => text.includes('American English'))).toBe(true);
+        expect(optionTexts.some(text => text.includes('German (Germany)'))).toBe(false);
+      });
+    });
+
+    it('applies the option picked from the selection', async () => {
+      renderLocaleField();
+
+      fireEvent.click(getLocaleControl());
+      fireEvent.change(screen.getByRole('combobox', { name: /options filter/ }), { target: { value: 'azil' } });
+
+      // the search term is highlighted within the option, so match on the full text of the option
+      const brazilianOption = await waitFor(() => {
+        const option = screen.getAllByRole('option').find(o => o.textContent.includes('Brazilian Portuguese'));
+
+        expect(option).toBeDefined();
+
+        return option;
+      });
+
+      fireEvent.click(brazilianOption);
+
+      await waitFor(() => expect(getLocaleControl()).toHaveTextContent('Brazilian Portuguese / português (Brasil)'));
+    });
+  });
 });

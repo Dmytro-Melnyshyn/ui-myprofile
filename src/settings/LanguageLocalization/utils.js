@@ -6,6 +6,21 @@ import {
 import { supportedLocales } from '@folio/stripes/core';
 
 /**
+ * filterByLabelContains: `onFilter` for Selection that keeps the options whose label
+ * contains the search term anywhere in it, ignoring case.
+ * e.g. the term `english` matches `British English / British English`
+ *
+ * @param {string} searchTerm text typed into the Selection filter input
+ * @param {array} dataOptions array of {value, label} options
+ * @returns {array} the options whose label contains the search term
+ */
+export const filterByLabelContains = (searchTerm = '', dataOptions = []) => {
+  const term = searchTerm.toLowerCase();
+
+  return dataOptions.filter(option => String(option.label).toLowerCase().includes(term));
+};
+
+/**
  * localesList: list of available locales suitable for a Select
  * label contains language in context's locale and in iteree's locale
  * e.g. given the context's locale is `en` and the keys `ar` and `zh-CN` show:

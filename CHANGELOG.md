@@ -2,6 +2,8 @@
 
 ## IN PROGRESS
 
+* Language & localization: use the searchable `Selection` component for the locale field, with search matching any part of the option label. Refs UIMPROF-127.
+
 ## 11.0.0 (https://github.com/folio-org/ui-myprofile/tree/v11.0.0) (2026-04-16)
 [Full Changelog](https://github.com/folio-org/ui-myprofile/compare/v10.0.0...v11.0.0)
 
