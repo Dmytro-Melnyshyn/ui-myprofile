@@ -10,7 +10,7 @@ import {
   Button,
   CommandList,
   PaneMenu,
-  Select,
+  Selection,
   defaultKeyboardShortcuts
 } from '@folio/stripes/components';
 import {
@@ -95,11 +95,11 @@ const LanguageLocalization = () => {
     <PaneMenu>
       <Button
         onClick={handleResetToDefault}
-        buttonStyle="primary"
+        buttonStyle='primary'
         disabled={!userHasSetLocalePreferences}
         marginBottom0
       >
-        <FormattedMessage id="ui-myprofile.settings.languageLocalization.resetToDefault" />
+        <FormattedMessage id='ui-myprofile.settings.languageLocalization.resetToDefault' />
       </Button>
     </PaneMenu>
   ), [handleResetToDefault, userHasSetLocalePreferences]);
@@ -108,7 +108,7 @@ const LanguageLocalization = () => {
     <CommandList commands={defaultKeyboardShortcuts}>
       <TitleManager record={paneTitle}>
         <ConnectedConfigManager
-          formType="final-form"
+          formType='final-form'
           label={paneTitle}
           scope={userOwnLocaleConfig.SCOPE}
           configName={userOwnLocaleConfig.KEY}
@@ -124,7 +124,11 @@ const LanguageLocalization = () => {
             name={fieldNames.LOCALE}
             label={intl.formatMessage({ id: 'ui-myprofile.settings.languageLocalization.fieldLocale.label' })}
             dataOptions={localesOptions}
-            component={Select}
+            component={Selection}
+            onFilter={(term, data) => {
+              const t = (term || '').toLowerCase();
+              return data.filter(o => o.label?.toLowerCase().includes(t));
+            }}
           />
         </ConnectedConfigManager>
       </TitleManager>
