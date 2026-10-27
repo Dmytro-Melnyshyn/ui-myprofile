@@ -58,3 +58,16 @@ export const localesList = (intl, tenantLocale) => {
 
   return locales;
 };
+
+/**
+ * filterOptionsContains: filters options whose label contains the search term (case-insensitive)
+ *
+ * @param {string} value search term
+ * @param {array} dataOptions array of {value, label}
+ * @returns {array} matching options
+ */
+export const filterOptionsContains = (value, dataOptions = []) => {
+  const term = (value || '').toLowerCase();
+
+  return dataOptions.filter(o => (o.label || '').toLowerCase().includes(term));
+};
