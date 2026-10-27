@@ -18,6 +18,12 @@ import { supportedLocales } from '@folio/stripes/core';
  * @param {object} intl react-intl object in the current context's locale
  * @returns {array} array of {value, label} suitable for a Select
  */
+export const filterOptionsByContains = (value, options = []) => {
+  const normalizedValue = value.toLocaleLowerCase();
+
+  return options.filter(option => option.label.toLocaleLowerCase().includes(normalizedValue));
+};
+
 export const localesList = (intl, tenantLocale) => {
   // This is optional but highly recommended
   // since it prevents memory leak
