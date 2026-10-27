@@ -5,6 +5,12 @@ import {
 
 import { supportedLocales } from '@folio/stripes/core';
 
+export const containsFilter = (value, dataOptions = []) => {
+  const normalizedValue = value.toLocaleLowerCase();
+
+  return dataOptions.filter(option => option.label.toLocaleLowerCase().includes(normalizedValue));
+};
+
 /**
  * localesList: list of available locales suitable for a Select
  * label contains language in context's locale and in iteree's locale
