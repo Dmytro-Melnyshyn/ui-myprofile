@@ -58,3 +58,17 @@ export const localesList = (intl, tenantLocale) => {
 
   return locales;
 };
+
+/**
+ * filterLocalesByContains: case-insensitive "contains" filter for locale options
+ * @param {string} filterValue - text typed by the user
+ * @param {array} dataOptions - array of {value, label}
+ * @returns {array} options whose label contains filterValue
+ */
+export const filterLocalesByContains = (filterValue, dataOptions = []) => {
+  const search = (filterValue || '').trim().toLowerCase();
+
+  if (!search) return dataOptions;
+
+  return dataOptions.filter(({ label = '' }) => label.toLowerCase().includes(search));
+};
