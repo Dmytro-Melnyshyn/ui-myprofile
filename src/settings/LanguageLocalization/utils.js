@@ -16,8 +16,14 @@ import { supportedLocales } from '@folio/stripes/core';
  *     الصينية (الصين) / 中文（中国）
  *
  * @param {object} intl react-intl object in the current context's locale
- * @returns {array} array of {value, label} suitable for a Select
+ * @returns {array} array of {value, label} suitable for a Selection
  */
+export const filterLocales = (value, dataOptions = []) => {
+  const normalizedValue = value.toLowerCase();
+
+  return dataOptions.filter(({ label }) => label.toLowerCase().includes(normalizedValue));
+};
+
 export const localesList = (intl, tenantLocale) => {
   // This is optional but highly recommended
   // since it prevents memory leak

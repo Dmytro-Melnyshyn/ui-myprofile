@@ -15,6 +15,7 @@ import {
 } from '@folio/jest-config-stripes/testing-library/react';
 
 import LanguageLocalization from './LanguageLocalization';
+import { filterLocales } from './utils';
 import { useTenantLocale } from '../../queries';
 import Harness from '../../../test/jest/helpers/Harness';
 import buildStripes from '../../../test/jest/__mock__/stripesCore.mock';
@@ -61,6 +62,18 @@ const renderLanguageLocalization = (props = {}) => render(
 
 describe('LanguageLocalization', () => {
   const mockUpdateSetting = jest.fn();
+
+  describe('when filtering locales', () => {
+    it('matches text anywhere in the locale label, case-insensitively', () => {
+      const options = [
+        { value: 'en-US', label: 'American English' },
+        { value: 'en-GB', label: 'British English' },
+      ];
+
+      expect(filterLocales('lish', options)).toEqual(options);
+      expect(filterLocales('AMERICAN', options)).toEqual([options[0]]);
+    });
+  });
 
   beforeEach(() => {
     jest.clearAllMocks();
