@@ -14,7 +14,7 @@ import {
   waitFor,
 } from '@folio/jest-config-stripes/testing-library/react';
 
-import LanguageLocalization from './LanguageLocalization';
+import LanguageLocalization, { onFilter } from './LanguageLocalization';
 import { useTenantLocale } from '../../queries';
 import Harness from '../../../test/jest/helpers/Harness';
 import buildStripes from '../../../test/jest/__mock__/stripesCore.mock';
@@ -208,5 +208,25 @@ describe('LanguageLocalization', () => {
       });
       await waitFor(() => expect(mockSetLocale).toHaveBeenCalledWith('en-US-u-nu-latn'));
     });
+  });
+});
+
+describe('onFilter', () => {
+  const list = [
+    { label: 'English (United States)', value: 'en-US' },
+    { label: 'German', value: 'de' },
+    { label: 'Spanish', value: 'es' },
+  ];
+
+  it('matches items that contain the text anywhere in the label', () => {
+    expect(onFilter('ish', list).renderedItems).toEqual([list[0], list[2]]);
+  });
+
+  it('is case-insensitive', () => {
+    expect(onFilter('GERM', list).renderedItems).toEqual([list[1]]);
+  });
+
+  it('returns the whole list for empty text', () => {
+    expect(onFilter('', list).renderedItems).toEqual(list);
   });
 });

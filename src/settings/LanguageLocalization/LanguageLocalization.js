@@ -29,7 +29,7 @@ const fieldNames = {
   LOCALE: 'locale',
 };
 
-const onFilter = (filterText, list) => {
+export const onFilter = (filterText, list) => {
   const text = (filterText || '').toLowerCase();
   const renderedItems = text
     ? list.filter(item => item.label?.toLowerCase().includes(text))
