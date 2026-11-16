@@ -209,4 +209,17 @@ describe('LanguageLocalization', () => {
       await waitFor(() => expect(mockSetLocale).toHaveBeenCalledWith('en-US-u-nu-latn'));
     });
   });
+
+  describe('locale selection filter', () => {
+    it('should filter options by "contains"', () => {
+      renderLanguageLocalization();
+
+      const { onFilter, component } = ConfigManager.mock.calls[0][0].children.props;
+      const data = [{ label: 'English (United States)' }, { label: 'German' }];
+
+      expect(component).toBeDefined();
+      expect(onFilter('states', data)).toEqual([data[0]]);
+      expect(onFilter('', data)).toEqual(data);
+    });
+  });
 });
